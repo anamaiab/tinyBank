@@ -155,11 +155,11 @@
     <h1>Account Details</h1>
     <div class="balance-container">
         <span class="balance">Balance: <span id="balance" th:text="${total_balance}">0.00</span></span>
-        <button class="toggle-button" onclick="toggleBalance()">👁️</button>
+        <button class="toggle-button" onclick="toggleBalance()">👁️ee</button>
     </div>
     <div class="button-group">
-        <button class="button" onclick="openModal('addCreditModal')">Add Credit</button>
-        <button class="button" onclick="openModal('withdrawCreditModal')">Withdraw Credit</button>
+        <button class="button" onclick="openModal('addMoneyModal')">Add Money</button>
+        <button class="button" onclick="openModal('withdrawMoneyModal')">Withdraw Money</button>
     </div>
     <div class="button-group">
         <button class="button" onclick="fetchRecentHistory()">View Recent History</button>
@@ -171,32 +171,32 @@
     </div>
 </div>
 
-<!-- Add Credit Modal -->
-<div id="addCreditModal" class="modal">
+<!-- Add Money Modal -->
+<div id="addMoneyModal" class="modal">
     <div class="modal-content">
-        <span class="close" onclick="closeModal('addCreditModal')">&times;</span>
-        <h2>Add Credit</h2>
-        <form action="/add_credit" method="post">
+        <span class="close" onclick="closeModal('addMoneyModal')">&times;</span>
+        <h2>Add Money</h2>
+        <form action="/add_money" method="post">
             <label for="addAmount">Amount:</label>
             <input type="number" id="addAmount" name="amount" step="0.01" min="0.01" required>
             <label for="password">Password:</label>
             <input type="password" id="password" name="password" required>
-            <button type="submit" class="button">Add Credit</button>
+            <button type="submit" class="button">Add Money</button>
         </form>
     </div>
 </div>
 
-<!-- Withdraw Credit Modal -->
-<div id="withdrawCreditModal" class="modal">
+<!-- Withdraw Money Modal -->
+<div id="withdrawMoneyModal" class="modal">
     <div class="modal-content">
-        <span class="close" onclick="closeModal('withdrawCreditModal')">&times;</span>
-        <h2>Withdraw Credit</h2>
-        <form action="/withdraw_credit" method="post">
+        <span class="close" onclick="closeModal('withdrawMoneyModal')">&times;</span>
+        <h2>Withdraw Money</h2>
+        <form action="/withdraw_money" method="post">
             <label for="withdrawAmount">Amount:</label>
             <input type="number" id="withdrawAmount" name="amount" step="0.01" min="0.01" required>
             <label for="password">Password:</label>
             <input type="password" id="password" name="password" required>
-            <button type="submit" class="button">Withdraw Credit</button>
+            <button type="submit" class="button">Withdraw Money</button>
         </form>
     </div>
 </div>

@@ -75,8 +75,8 @@ public class TinyBankController {
         }
     }
 
-    @PostMapping("/add_credit")
-    public String addCredit(@SessionAttribute(value = "user", required = false) User user, @RequestParam double amount, @RequestParam String password, Model model) {
+    @PostMapping("/add_money")
+    public String addMoney(@SessionAttribute(value = "user", required = false) User user, @RequestParam double amount, @RequestParam String password, Model model) {
         if (user == null) {
             return "redirect:/access_denied";
         }
@@ -96,8 +96,8 @@ public class TinyBankController {
         }
     }
 
-    @PostMapping("/withdraw_credit")
-    public String withdrawCredit(@SessionAttribute(value = "user", required = false) User user, @RequestParam double amount, @RequestParam String password, Model model) {
+    @PostMapping("/withdraw_money")
+    public String withdrawMoney(@SessionAttribute(value = "user", required = false) User user, @RequestParam double amount, @RequestParam String password, Model model) {
         if (user == null) {
             return "redirect:/access_denied";
         }
