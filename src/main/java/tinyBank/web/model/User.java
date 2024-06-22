@@ -1,17 +1,20 @@
 package tinyBank.web.model;
 
 public class User {
-    private String password;
+    private String name;
     private String document;
+    private String password;
+    private String confirmPassword;
+    private String transactionPassword;
     private History history;
 
     // Getters e Setters
-    public String getPassword() {
-        return password;
+    public String getName() {
+        return name;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getDocument() {
@@ -22,6 +25,30 @@ public class User {
         this.document = document;
     }
 
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getConfirmPassword() {
+        return confirmPassword;
+    }
+
+    public void setConfirmPassword(String confirmPassword) {
+        this.confirmPassword = confirmPassword;
+    }
+
+    public String getTransactionPassword() {
+        return transactionPassword;
+    }
+
+    public void setTransactionPassword(String transactionPassword) {
+        this.transactionPassword = transactionPassword;
+    }
+
     public History getHistory() {
         return history;
     }
@@ -30,5 +57,3 @@ public class User {
         this.history = history;
     }
 }
-
-

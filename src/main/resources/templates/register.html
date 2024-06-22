@@ -17,6 +17,7 @@
             border-radius: 10px;
             padding: 20px;
             display: inline-block;
+            width: 320px;
         }
         h1 {
             color: #d4d700;
@@ -30,11 +31,53 @@
             margin-bottom: 5px;
         }
         input {
-            width: 100%;
+            width: calc(100% - 5px);
             padding: 10px;
             margin-bottom: 10px;
             border-radius: 5px;
             border: 1px solid #ccc;
+            box-sizing: border-box;
+        }
+        .info-icon {
+            display: inline-block;
+            margin-left: 5px;
+            cursor: pointer;
+            position: relative;
+            vertical-align: middle;
+        }
+        .info-icon img {
+            width: 18px;
+            height: 18px;
+        }
+        .info-icon:hover .tooltip {
+            visibility: visible;
+            opacity: 1;
+        }
+        .tooltip {
+            visibility: hidden;
+            opacity: 0;
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            border-radius: 5px;
+            padding: 5px;
+            position: absolute;
+            z-index: 1;
+            bottom: 125%;
+            left: 50%;
+            margin-left: -90px;
+            width: 180px;
+            transition: opacity 0.3s;
+        }
+        .tooltip::after {
+            content: "";
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            margin-left: -5px;
+            border-width: 5px;
+            border-style: solid;
+            border-color: #333 transparent transparent transparent;
         }
         .button {
             background-color: #d4d700;
@@ -118,12 +161,29 @@
     <h1>User Registration</h1>
     <form action="#" th:action="@{/register}" th:object="${user}" method="post">
         <div class="form-group">
-            <label for="document">Document:</label>
+            <label for="name">Name:</label>
+            <input type="text" id="name" th:field="*{name}" required />
+        </div>
+        <div class="form-group">
+            <label for="document">ID:</label>
             <input type="text" id="document" th:field="*{document}" required />
         </div>
         <div class="form-group">
             <label for="password">Password:</label>
             <input type="password" id="password" th:field="*{password}" required />
+        </div>
+        <div class="form-group">
+            <label for="confirmPassword">Confirm Password:</label>
+            <input type="password" id="confirmPassword" th:field="*{confirmPassword}" required />
+        </div>
+        <div class="form-group">
+            <label for="transactionPassword">Transaction Password:
+                <span class="info-icon">
+                    <img src="/images/icon-info.png" alt="Info">
+                    <span class="tooltip">This password will be used for transaction verification and must be different from the login password.</span>
+                </span>
+            </label>
+            <input type="password" id="transactionPassword" th:field="*{transactionPassword}" required />
         </div>
         <div class="button-group">
             <button type="button" class="button" onclick="logoutAndRedirect()">Back to Home</button>

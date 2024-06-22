@@ -35,6 +35,8 @@
         .toggle-eye {
             cursor: pointer;
             margin-left: 10px;
+            width: 30px;
+            height: 30px;
         }
         .button {
             background-color: #d4d700;
@@ -117,13 +119,13 @@
 
             if (balanceElement.textContent === '****') {
                 balanceElement.textContent = balanceElement.getAttribute('balance');
-                eyeOpen.style.display = 'none';
-                eyeClosed.style.display = 'inline';
+                eyeOpen.style.display = 'inline';
+                eyeClosed.style.display = 'none';
             } else {
                 balanceElement.setAttribute('balance', balanceElement.textContent);
                 balanceElement.textContent = '****';
-                eyeOpen.style.display = 'inline';
-                eyeClosed.style.display = 'none';
+                eyeOpen.style.display = 'none';
+                eyeClosed.style.display = 'inline';
             }
         }
 
@@ -161,11 +163,11 @@
 </head>
 <body th:with="error=${error}">
 <div class="container">
-    <h1>Account Details</h1>
+    <h1><span th:text="${user.name}"></span>'s Account Details</h1>
     <div class="balance-container">
         <span class="balance">Balance: <span id="balance" th:text="${total_balance}">0.00</span></span>
-        <img id="eyeOpen" class="toggle-eye" src="/images/icon-eye.jpg" alt="Eye Open" onclick="toggleBalance()" style="display:none;">
-        <img id="eyeClosed" class="toggle-eye" src="/images/hidden-icon-eye.jpg" alt="Eye Closed" onclick="toggleBalance()" style="display:inline;">
+        <img id="eyeOpen" class="toggle-eye" src="/images/icon-eye.png" alt="Eye Open" onclick="toggleBalance()" style="display:inline;">
+        <img id="eyeClosed" class="toggle-eye" src="/images/hidden-icon-eye.png" alt="Eye Closed" onclick="toggleBalance()" style="display:none;">
     </div>
     <div class="button-group">
         <button class="button" onclick="openModal('addMoneyModal')">Add Money</button>
@@ -189,7 +191,7 @@
         <form action="/add_money" method="post">
             <label for="addAmount">Amount:</label>
             <input type="number" id="addAmount" name="amount" step="0.01" min="0.01" required>
-            <label for="password">Password:</label>
+            <label for="password">Transaction Password:</label>
             <input type="password" id="password" name="password" required>
             <button type="submit" class="button">Add Money</button>
         </form>
@@ -204,7 +206,7 @@
         <form action="/withdraw_money" method="post">
             <label for="withdrawAmount">Amount:</label>
             <input type="number" id="withdrawAmount" name="amount" step="0.01" min="0.01" required>
-            <label for="password">Password:</label>
+            <label for="password">Transaction Password:</label>
             <input type="password" id="password" name="password" required>
             <button type="submit" class="button">Withdraw Money</button>
         </form>
@@ -221,7 +223,7 @@
             <input type="text" id="recipientId" name="recipientId" required>
             <label for="transferAmount">Amount:</label>
             <input type="number" id="transferAmount" name="amount" step="0.01" min="0.01" required>
-            <label for="password">Password:</label>
+            <label for="password">Transaction Password:</label>
             <input type="password" id="password" name="password" required>
             <button type="submit" class="button">Transfer</button>
         </form>

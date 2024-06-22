@@ -17,7 +17,7 @@
             border-radius: 10px;
             padding: 20px;
             display: inline-block;
-            width: 300px;
+            width: 320px;
         }
         h1 {
             color: #d4d700;
@@ -31,11 +31,12 @@
             margin-bottom: 5px;
         }
         input {
-            width: 100%;
+            width: calc(100% - 5px);
             padding: 10px;
             margin-bottom: 10px;
             border-radius: 5px;
             border: 1px solid #ccc;
+            box-sizing: border-box;
         }
         .button {
             background-color: #d4d700;
@@ -52,6 +53,10 @@
         }
         .button:hover {
             background-color: #b3b300;
+        }
+        .button-group {
+            display: flex;
+            justify-content: space-between;
         }
         .modal {
             display: none;
@@ -108,14 +113,14 @@
     <h1>Login</h1>
     <form action="/login" method="post">
         <div class="form-group">
-            <label for="document">Document:</label>
+            <label for="document">ID:</label>
             <input type="text" id="document" name="document" required />
         </div>
         <div class="form-group">
             <label for="password">Password:</label>
             <input type="password" id="password" name="password" required />
         </div>
-        <div class="form-group">
+        <div class="button-group">
             <button type="submit" class="button">Login</button>
             <a href="register" class="button">Register New User</a>
         </div>

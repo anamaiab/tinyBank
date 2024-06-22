@@ -28,12 +28,23 @@ public class TinyBankController {
     @PostMapping("/register")
     public String registerUser(@ModelAttribute("user") User user, Model model) {
         try {
+
+            if (!user.getPassword().equals(user.getConfirmPassword())) {
+                throw new IllegalArgumentException("Passwords do not match");
+
+            }
+            if (user.getPassword().equals(user.getTransactionPassword())) {
+                throw new IllegalArgumentException("Login password and transaction password must be different");
+
+            }
+
             if (userList.isEmpty() || !userList.containsKey(user.getDocument())) {
                 user.setHistory(new History());
                 userList.put(user.getDocument(), user);
             } else {
                 throw new IllegalArgumentException("This user already exists");
             }
+
             model.addAttribute("registeredUser", user);
             return "registration_success";
         } catch (Exception e) {
@@ -81,7 +92,7 @@ public class TinyBankController {
             return "redirect:/access_denied";
         }
         try {
-            validateLogin(user, password, "Wrong password. It's necessary to send the correct password to transfer amount");
+            validatePassword(user, password, "Wrong password. It's necessary to send the correct password to transfer amount");
             validateAmount(amount, "You can't deposit negative amount");
 
             History userHistoryValues = user.getHistory();
@@ -102,7 +113,7 @@ public class TinyBankController {
             return "redirect:/access_denied";
         }
         try {
-            validateLogin(user, password, "Wrong password. It's necessary to send the correct password to withdrawal amount");
+            validatePassword(user, password, "Wrong password. It's necessary to send the correct password to withdrawal amount");
             validateAmount(amount, "You can't withdraw negative amount");
 
             History userHistoryValues = user.getHistory();
@@ -145,7 +156,7 @@ public class TinyBankController {
             return "redirect:/access_denied";
         }
         try {
-            validateLogin(user, password, "Wrong password. It's necessary to send the correct password to transfer amount");
+            validatePassword(user, password, "Wrong password. It's necessary to send the correct password to transfer amount");
 
             if (user.getDocument().equals(recipientId)) {
                 throw new Exception("You can't transfer to yourself");
@@ -222,6 +233,12 @@ public class TinyBankController {
         }
 
         if (!user.getPassword().equals(password)) {
+            throw new IllegalArgumentException(message);
+        }
+    }
+
+    private static void validatePassword(User user, String password, String message) throws Exception {
+        if (!user.getTransactionPassword().equals(password)) {
             throw new IllegalArgumentException(message);
         }
     }
