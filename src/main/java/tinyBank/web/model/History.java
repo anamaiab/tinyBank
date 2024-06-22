@@ -31,7 +31,7 @@ public class History {
     }
 
     public void addTransaction(Double amount, TypeTransaction typeTransaction){
-        if(typeTransaction.equals(TypeTransaction.WITHDRAWAL) || typeTransaction.equals(TypeTransaction.TRANSFER_SEND)) {
+        if(typeTransaction.equals(TypeTransaction.WITHDRAWAL) || typeTransaction.equals(TypeTransaction.TRANSFER_SENT)) {
             totalAmount -= amount;
         }
         else {

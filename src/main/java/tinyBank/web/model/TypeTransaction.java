@@ -1,5 +1,5 @@
 package tinyBank.web.model;
 
 public enum TypeTransaction {
-    DEPOSIT, WITHDRAWAL, TRANSFER_SEND, TRANSFER_RECEIVE
+    DEPOSIT, WITHDRAWAL, TRANSFER_SENT, TRANSFER_RECEIVED
 }

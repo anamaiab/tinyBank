@@ -32,12 +32,9 @@
         .balance {
             margin-right: 10px;
         }
-        .toggle-button {
-            background: none;
-            border: none;
+        .toggle-eye {
             cursor: pointer;
-            font-size: 24px;
-            color: #d4d700;
+            margin-left: 10px;
         }
         .button {
             background-color: #d4d700;
@@ -115,19 +112,29 @@
     <script>
         function toggleBalance() {
             var balanceElement = document.getElementById('balance');
+            var eyeOpen = document.getElementById('eyeOpen');
+            var eyeClosed = document.getElementById('eyeClosed');
+
             if (balanceElement.textContent === '****') {
                 balanceElement.textContent = balanceElement.getAttribute('balance');
+                eyeOpen.style.display = 'none';
+                eyeClosed.style.display = 'inline';
             } else {
                 balanceElement.setAttribute('balance', balanceElement.textContent);
                 balanceElement.textContent = '****';
+                eyeOpen.style.display = 'inline';
+                eyeClosed.style.display = 'none';
             }
         }
+
         function openModal(modalId) {
             document.getElementById(modalId).style.display = "block";
         }
+
         function closeModal(modalId) {
             document.getElementById(modalId).style.display = "none";
         }
+
         function fetchRecentHistory() {
             fetch('/recent_history')
                 .then(response => response.text())
@@ -137,6 +144,7 @@
                 })
                 .catch(error => console.error('Error fetching recent history:', error));
         }
+
         function logoutAndRedirect() {
             fetch('/logout')
                 .then(() => {
@@ -144,6 +152,7 @@
                 })
                 .catch(error => console.error('Error logging out:', error));
         }
+
         function showError(message) {
             document.getElementById('errorMessage').textContent = message;
             openModal('errorModal');
@@ -155,7 +164,8 @@
     <h1>Account Details</h1>
     <div class="balance-container">
         <span class="balance">Balance: <span id="balance" th:text="${total_balance}">0.00</span></span>
-        <button class="toggle-button" onclick="toggleBalance()">👁️ee</button>
+        <img id="eyeOpen" class="toggle-eye" src="/images/icon-eye.jpg" alt="Eye Open" onclick="toggleBalance()" style="display:none;">
+        <img id="eyeClosed" class="toggle-eye" src="/images/hidden-icon-eye.jpg" alt="Eye Closed" onclick="toggleBalance()" style="display:inline;">
     </div>
     <div class="button-group">
         <button class="button" onclick="openModal('addMoneyModal')">Add Money</button>

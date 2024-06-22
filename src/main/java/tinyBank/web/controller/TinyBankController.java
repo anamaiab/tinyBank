@@ -166,8 +166,8 @@ public class TinyBankController {
             User receivedUser = userList.get(recipientId);
             History recipientHistoryValues = receivedUser.getHistory();
 
-            userHistoryValues.addTransaction(amount, TypeTransaction.TRANSFER_SEND);
-            recipientHistoryValues.addTransaction(amount, TypeTransaction.TRANSFER_RECEIVE);
+            userHistoryValues.addTransaction(amount, TypeTransaction.TRANSFER_SENT);
+            recipientHistoryValues.addTransaction(amount, TypeTransaction.TRANSFER_RECEIVED);
 
             return showUserData(user, model);
         } catch (Exception e) {
