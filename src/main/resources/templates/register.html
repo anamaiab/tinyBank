@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Registration</title>
+    <style>
+        body {
+            background-color: #000000;
+            color: white;
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 50px;
+        }
+        .container {
+            background-color: #1a1a1a;
+            border-radius: 10px;
+            padding: 20px;
+            display: inline-block;
+        }
+        h1 {
+            color: #d4d700;
+        }
+        .form-group {
+            margin: 15px 0;
+            text-align: left;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+        .button {
+            background-color: #d4d700;
+            color: #000000;
+            padding: 15px 25px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 10px 5px;
+            border-radius: 5px;
+            cursor: pointer;
+            border: none;
+        }
+        .button:hover {
+            background-color: #b3b300;
+        }
+        .button-group {
+            display: flex;
+            justify-content: space-between;
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.4);
+            padding-top: 60px;
+        }
+        .modal-content {
+            background-color: #aaa;
+            margin: 5% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            position: relative;
+            text-align: center;
+        }
+        .close {
+            color: #000;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            cursor: pointer;
+        }
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+        }
+    </style>
+    <script>
+        function openModal(modalId) {
+            document.getElementById(modalId).style.display = "block";
+        }
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = "none";
+        }
+        function showError(message) {
+            document.getElementById('errorMessage').textContent = message;
+            openModal('errorModal');
+        }
+        function logoutAndRedirect() {
+            fetch('/logout')
+                .then(() => {
+                    window.location.href = "/";
+                })
+                .catch(error => console.error('Error logging out:', error));
+        }
+    </script>
+</head>
+<body th:with="error=${error}">
+<div class="container">
+    <h1>User Registration</h1>
+    <form action="#" th:action="@{/register}" th:object="${user}" method="post">
+        <div class="form-group">
+            <label for="document">Document:</label>
+            <input type="text" id="document" th:field="*{document}" required />
+        </div>
+        <div class="form-group">
+            <label for="password">Password:</label>
+            <input type="password" id="password" th:field="*{password}" required />
+        </div>
+        <div class="button-group">
+            <button type="button" class="button" onclick="logoutAndRedirect()">Back to Home</button>
+            <button type="submit" class="button">Register</button>
+        </div>
+    </form>
+</div>
+
+<!-- Error Modal -->
+<div id="errorModal" class="modal" th:if="${error}">
+    <div class="modal-content">
+        <span class="close" onclick="closeModal('errorModal')">&times;</span>
+        <h2>Error</h2>
+        <p id="errorMessage" th:text="${errorMessage}"></p>
+    </div>
+</div>
+
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    var error = /*[[${error}]]*/ false;
+    if (error) {
+        showError(/*[[${errorMessage}]]*/ '');
+    }
+    /*]]>*/
+</script>
+
+</body>
+</html>

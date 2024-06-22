@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unauthorized Access</title>
+    <style>
+        body {
+            background-color: #000000;
+            color: white;
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 50px;
+        }
+        .container {
+            background-color: #1a1a1a;
+            border-radius: 10px;
+            padding: 20px;
+            display: inline-block;
+            width: 300px;
+        }
+        h1 {
+            color: #d4d700;
+        }
+        .button {
+            background-color: #d4d700;
+            color: #000000;
+            padding: 15px 25px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 10px 5px;
+            border-radius: 5px;
+            cursor: pointer;
+            border: none;
+        }
+        .button:hover {
+            background-color: #b3b300;
+        }
+    </style>
+    <script>
+        function logoutAndRedirect() {
+            fetch('/logout')
+                .then(() => {
+                    window.location.href = "/";
+                })
+                .catch(error => console.error('Error logging out:', error));
+        }
+    </script>
+</head>
+<body>
+<div class="container">
+    <h1>Unauthorized Access</h1>
+    <p>It is necessary to be logged in to access this page.</p>
+    <button class="button" onclick="logoutAndRedirect()">Back to Login</button>
+</div>
+</body>
+</html>

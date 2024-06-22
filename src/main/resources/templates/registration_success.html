@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registration Successful</title>
+    <style>
+        body {
+            background-color: #000000;
+            color: white;
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 50px;
+        }
+        .container {
+            background-color: #1a1a1a;
+            border-radius: 10px;
+            padding: 20px;
+            display: inline-block;
+        }
+        h1 {
+            color: #d4d700;
+        }
+        .button {
+            background-color: #d4d700;
+            color: #000000;
+            padding: 15px 25px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 10px 5px;
+            border-radius: 5px;
+            cursor: pointer;
+            border: none;
+        }
+        .button:hover {
+            background-color: #b3b300;
+        }
+        .button-group {
+            display: flex;
+            justify-content: space-between;
+        }
+    </style>
+    <script>
+        function logoutAndRedirect() {
+            fetch('/logout')
+                .then(() => {
+                    window.location.href = "/";
+                })
+                .catch(error => console.error('Error logging out:', error));
+        }
+        function showError(message) {
+            document.getElementById('errorMessage').textContent = message;
+            openModal('errorModal');
+        }
+        function openModal(modalId) {
+            document.getElementById(modalId).style.display = "block";
+        }
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = "none";
+        }
+    </script>
+</head>
+<body th:with="error=${error}">
+<div class="container">
+    <h1>Registration Successful!</h1>
+    <p>Your account has been created successfully.</p>
+    <div class="button-group">
+        <button class="button" onclick="logoutAndRedirect()">Back to Home</button>
+        <a href="register" class="button">Register New User</a>
+        <a href="user_data" class="button">View Account Details</a>
+    </div>
+</div>
+
+<!-- Error Modal -->
+<div id="errorModal" class="modal" th:if="${error}">
+    <div class="modal-content">
+        <span class="close" onclick="closeModal('errorModal')">&times;</span>
+        <h2>Error</h2>
+        <p id="errorMessage" th:text="${errorMessage}"></p>
+    </div>
+</div>
+
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    var error = /*[[${error}]]*/ false;
+    if (error) {
+        showError(/*[[${errorMessage}]]*/ '');
+    }
+    /*]]>*/
+</script>
+
+</body>
+</html>

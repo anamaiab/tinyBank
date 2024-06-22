@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Account Details</title>
+    <style>
+        body {
+            background-color: #000000;
+            color: white;
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 50px;
+        }
+        .container {
+            background-color: #1a1a1a;
+            border-radius: 10px;
+            padding: 20px;
+            display: inline-block;
+            width: 320px;
+        }
+        h1 {
+            color: #d4d700;
+        }
+        .balance-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 24px;
+            margin: 20px 0;
+        }
+        .balance {
+            margin-right: 10px;
+        }
+        .toggle-button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 24px;
+            color: #d4d700;
+        }
+        .button {
+            background-color: #d4d700;
+            color: #000000;
+            padding: 15px 25px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            border: none;
+            width: 140px;
+        }
+        .button:hover {
+            background-color: #b3b300;
+        }
+        .button-group {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+        }
+        .button-group .button {
+            flex: 1 1 calc(50% - 20px);
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.4);
+            padding-top: 60px;
+        }
+        .modal-content {
+            background-color: #aaa;
+            margin: 5% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            position: relative;
+            text-align: center;
+        }
+        .close {
+            color: #000;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            cursor: pointer;
+        }
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+        }
+        .transaction-list {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .transaction-item {
+            margin-bottom: 10px;
+        }
+        .error {
+            color: red;
+            font-weight: bold;
+        }
+    </style>
+    <script>
+        function toggleBalance() {
+            var balanceElement = document.getElementById('balance');
+            if (balanceElement.textContent === '****') {
+                balanceElement.textContent = balanceElement.getAttribute('balance');
+            } else {
+                balanceElement.setAttribute('balance', balanceElement.textContent);
+                balanceElement.textContent = '****';
+            }
+        }
+        function openModal(modalId) {
+            document.getElementById(modalId).style.display = "block";
+        }
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = "none";
+        }
+        function fetchRecentHistory() {
+            fetch('/recent_history')
+                .then(response => response.text())
+                .then(html => {
+                    document.querySelector('#recentHistoryModal .modal-content').innerHTML = html;
+                    openModal('recentHistoryModal');
+                })
+                .catch(error => console.error('Error fetching recent history:', error));
+        }
+        function logoutAndRedirect() {
+            fetch('/logout')
+                .then(() => {
+                    window.location.href = "/";
+                })
+                .catch(error => console.error('Error logging out:', error));
+        }
+        function showError(message) {
+            document.getElementById('errorMessage').textContent = message;
+            openModal('errorModal');
+        }
+    </script>
+</head>
+<body th:with="error=${error}">
+<div class="container">
+    <h1>Account Details</h1>
+    <div class="balance-container">
+        <span class="balance">Balance: <span id="balance" th:text="${total_balance}">0.00</span></span>
+        <button class="toggle-button" onclick="toggleBalance()">👁️</button>
+    </div>
+    <div class="button-group">
+        <button class="button" onclick="openModal('addCreditModal')">Add Credit</button>
+        <button class="button" onclick="openModal('withdrawCreditModal')">Withdraw Credit</button>
+    </div>
+    <div class="button-group">
+        <button class="button" onclick="fetchRecentHistory()">View Recent History</button>
+        <button class="button" onclick="openModal('transferModal')">Transfer to Another User</button>
+    </div>
+    <div class="button-group">
+        <button class="button" onclick="logoutAndRedirect()">Logout & Home</button>
+        <button class="button" onclick="openModal('deleteUserModal')">Delete User</button>
+    </div>
+</div>
+
+<!-- Add Credit Modal -->
+<div id="addCreditModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeModal('addCreditModal')">&times;</span>
+        <h2>Add Credit</h2>
+        <form action="/add_credit" method="post">
+            <label for="addAmount">Amount:</label>
+            <input type="number" id="addAmount" name="amount" step="0.01" min="0.01" required>
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" required>
+            <button type="submit" class="button">Add Credit</button>
+        </form>
+    </div>
+</div>
+
+<!-- Withdraw Credit Modal -->
+<div id="withdrawCreditModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeModal('withdrawCreditModal')">&times;</span>
+        <h2>Withdraw Credit</h2>
+        <form action="/withdraw_credit" method="post">
+            <label for="withdrawAmount">Amount:</label>
+            <input type="number" id="withdrawAmount" name="amount" step="0.01" min="0.01" required>
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" required>
+            <button type="submit" class="button">Withdraw Credit</button>
+        </form>
+    </div>
+</div>
+
+<!-- Transfer Modal -->
+<div id="transferModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeModal('transferModal')">&times;</span>
+        <h2>Transfer to Another User</h2>
+        <form action="/transfer_credit" method="post">
+            <label for="recipientId">Recipient ID:</label>
+            <input type="text" id="recipientId" name="recipientId" required>
+            <label for="transferAmount">Amount:</label>
+            <input type="number" id="transferAmount" name="amount" step="0.01" min="0.01" required>
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" required>
+            <button type="submit" class="button">Transfer</button>
+        </form>
+    </div>
+</div>
+
+<!-- Delete User Modal -->
+<div id="deleteUserModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeModal('deleteUserModal')">&times;</span>
+        <h2>Are you sure you want to delete your account?</h2>
+        <form action="/delete_user" method="post">
+            <div class="error" th:if="${errorMessage != null}" th:text="${errorMessage}"></div>
+            <label for="deletePassword">Password:</label>
+            <input type="password" id="deletePassword" name="password" required>
+            <button type="submit" class="button">Delete User</button>
+        </form>
+    </div>
+</div>
+
+<!-- Recent History Modal -->
+<div id="recentHistoryModal" class="modal">
+    <div class="modal-content">
+        <!-- This content will be replaced by the AJAX call -->
+    </div>
+</div>
+
+<!-- Error Modal -->
+<div id="errorModal" class="modal" th:if="${error}">
+    <div class="modal-content">
+        <span class="close" onclick="closeModal('errorModal')">&times;</span>
+        <h2>Error</h2>
+        <p id="errorMessage" th:text="${errorMessage}"></p>
+    </div>
+</div>
+
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    var error = /*[[${error}]]*/ false;
+    if (error) {
+        showError(/*[[${errorMessage}]]*/ '');
+    }
+    /*]]>*/
+</script>
+
+</body>
+</html>

@@ -1,0 +1,45 @@
+<div>
+    <span class="close" onclick="closeModal('recentHistoryModal')">&times;</span>
+    <h2>Recent History</h2>
+    <div class="transaction-list">
+        <div th:each="transaction : ${transactions}" class="transaction-item">
+            <p class="transactionLine">
+                <span class="typeTransaction"
+                      th:classappend="${transaction.typeTransaction}"
+                      th:text="${transaction.typeTransaction}"></span>
+                <span class="amount">
+                    <span class="currency">£</span>
+                    <span class="transactionAmount" th:text="${transaction.transactionAmount}"></span>
+                </span>
+                <span class="timestamp" th:text="${transaction.timestamp}"></span>
+            </p>
+        </div>
+    </div>
+</div>
+
+<style>
+    .typeTransaction {
+        font-weight: bold;
+    }
+    .typeTransaction {
+        color: green;
+    }
+    .typeTransaction.WITHDRAWAL {
+        color: red;
+    }
+    .typeTransaction.TRANSFER_SEND {
+        color: red;
+    }
+    .timestamp {
+        font-style: italic;
+    }
+    .transactionLine {
+        color: black;
+    }
+    .amount {
+        font-weight: bold;
+    }
+    .amount .currency, .amount .transactionAmount {
+        display: inline;
+    }
+</style>
