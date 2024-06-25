@@ -1,7 +1,6 @@
 ### README.md
 
-```markdown
-# tinyBank
+# TinyBank
 
 ## Overview
 
@@ -25,8 +24,8 @@ tinyBank is a simple web application designed to manage user registrations, logi
 - A web browser
 
 ## Project Structure
+```markdown
 
-```
 tinyBank/
 │
 ├── src/
